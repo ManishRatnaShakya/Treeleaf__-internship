@@ -1,0 +1,98 @@
+.header{
+     overflow: hidden;
+     background-color: #90a9ee;
+     color: white;
+     width: 100%;
+}
+.header__title{
+    font-size:20px;
+    font-family: monospace;
+}
+
+.container{
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 20px;
+    
+}
+.detail{
+    margin-top: 10px;
+}
+
+.form{
+   
+    width: 40%;
+}
+
+input[type=text],input[type=email], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+input[type=date]{
+    height: 35px;
+    margin-top: 3.5px;
+    padding-bottom: 3px;
+}
+
+input[type=text]:focus {
+  border-color: rgb(196, 214, 219);
+}
+
+button[type=submit] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.table{
+   text-align: center;
+    margin-left: 30px;
+    width:60%;
+    overflow: scroll;
+}
+table{
+    width: 100%;
+     border-collapse: collapse;
+}
+.pInfo{
+    display:flex;
+    justify-content: space-between;
+}
+
+.phone{
+    width:80%
+}
+.dob{
+    margin-top:4px;
+    
+}
+.cInfo{
+    display: flex;
+    justify-content: space-between
+}
+
+.provience{
+    width: 70%;
+}
+
+.profileBtn{
+width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+tr:nth-child(even) {background-color: #f2f2f2;}

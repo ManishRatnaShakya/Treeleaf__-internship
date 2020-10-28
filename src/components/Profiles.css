@@ -1,0 +1,40 @@
+.profiles{
+    
+}
+
+.profiles__container{
+  margin: 15px;
+  
+  height: 150px auto;
+  width:70%;
+}
+
+.index{
+    background-color: #9c6c6c;
+    color:white;
+    font-weight: 30px;
+    text-align: center;
+}
+
+.index__data{
+    
+    height: 50px;
+    background-color:#e7f3fe;
+    font-weight: 45px;
+    text-align: center;
+    color: black;
+}
+.index__email{
+background-color:#e7f3fe;
+    font-weight: 45px;
+    text-align: center;
+    color: black;
+}
+.link{
+    text-decoration:none;
+   
+    
+}
+.detail{
+    margin-top: 30px;
+}
