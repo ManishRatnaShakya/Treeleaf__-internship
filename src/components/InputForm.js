@@ -3,8 +3,7 @@ import Table from './Table';
 import {Link} from 'react-router-dom';
 import './InputForm.css'
 function InputForm() {
-    let err='';
-    let errMsg ='Please enter'+err;
+  
     let initalValue ={
             username:'',
             email:'',
@@ -29,13 +28,38 @@ function InputForm() {
     const [data,setData]=useState([])
 
     useEffect(()=>{
+        window.localStorage.setItem('data', JSON.stringify(data));
+    },[data])
 
-    },[username,email,phone,dob,city,country,provience,district])
+    let dataValue =JSON.parse( window.localStorage.getItem('data')||"[]");
+    console.log("from dvalue",dataValue)
     const handleSubmit=(e)=>{
-        e.preventDefault()
+      
         console.log(username,email,phone,dob,city,district,provience,country);
         if(!username||!email||!phone||!dob||!district||!city){
             alert('Please enter all the fields')
+            setUsername(username);
+            setEmail(email);
+            setPhone(phone);
+            setDob(dob);
+            setCity(city);
+            setDistrict(district);
+            setProvience(provience);
+            setCountry(country);
+        }
+        else if(!phone.match( /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)){
+            alert("Please check your phone number");
+            setUsername(username);
+            setEmail(email);
+            setPhone(phone);
+            setDob(dob);
+            setCity(city);
+            setDistrict(district);
+            setProvience(provience);
+            setCountry(country);
+        }
+        else if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
+            alert("Please check your email address");
             setUsername(username);
             setEmail(email);
             setPhone(phone);
@@ -56,7 +80,7 @@ function InputForm() {
         setProvience('3');
         setCountry('Nepal');
         
-        document.getElementById('user-data').reset();
+        // document.getElementById('user-data').reset();
        }
         //  setFormValue(initalValue);
          
@@ -115,18 +139,18 @@ function InputForm() {
             </div>
             <div className="container">
                 <div className="form">
-                        <form onSubmit={handleSubmit} id="user-data">
+                        {/* <form onSubmit={handleSubmit} id="user-data"> */}
                             
-                            <label htmlFor="username">Name</label><input type="text" id="username"  onChange={(e)=>{setUsername(e.target.value)}}/>
+                            <label htmlFor="username">Name</label><input type="text" id="username" value={username}  onChange={(e)=>{setUsername(e.target.value)}}/>
                      
-                            <label htmlFor="email">Email</label><input type="email" id="email"  onChange={(e)=>{setEmail(e.target.value)}} />
+                            <label htmlFor="email">Email</label><input type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
                 
                             <div className="pInfo">
                                 <div className="phone">
-                            <label htmlFor="phone">Phone</label><input type="text" id="phone"  onChange={(e)=>{setPhone(e.target.value)}} />
+                            <label htmlFor="phone">Phone</label><input type="text" id="phone" value={phone}  onChange={(e)=>{setPhone(e.target.value)}} />
                             </div>
                             <div className="dob">
-                            <label htmlFor="dob">Date of Birth</label><br/><input type="date" id="dob"  onChange={(e)=>{setDob(e.target.value)}}/>
+                            <label htmlFor="dob">Date of Birth</label><br/><input type="date" value={dob} id="dob"  onChange={(e)=>{setDob(e.target.value)}}/>
                             </div>
                             </div>
                             <br/>
@@ -134,8 +158,8 @@ function InputForm() {
                             <div className='address'>
                             <div className="address">
                                 
-                                        <label htmlFor="city">City</label><input type="text" id="city"  onChange={(e)=>{setCity(e.target.value)}}/>
-                                        <label htmlFor="district">District</label><input type="text" id="district"  onChange={(e)=>{setDistrict(e.target.value)}}/>
+                                        <label htmlFor="city">City</label><input type="text" id="city" value={city}  onChange={(e)=>{setCity(e.target.value)}}/>
+                                        <label htmlFor="district">District</label><input type="text" id="district" value={district}  onChange={(e)=>{setDistrict(e.target.value)}}/>
                                         <div className="cInfo">
                                             <div className="provience">     
                                         <label htmlFor="provience">Provience</label>
@@ -159,16 +183,16 @@ function InputForm() {
                                         </div>
                                         </div>
                                         </div>
-                                        <button className="submit" type="submit">Submit</button>
+                                        <button className="submit" onClick={handleSubmit} type="submit">Submit</button>
                                                         
                             </div>
-                        </form>
+                        {/* </form> */}
                     </div>
                 <div className="table">
                     <Table data={data}/>
-                     {data.length>0?<Link to={
-                     {pathname:'/profiles', data:data}
-                    }><button className="profileBtn">Profiles</button></Link>:''}
+                     {data.length>0?<Link to="profiles"><button className="profileBtn">Profiles</button></Link>:''}
+
+                   
                   </div>
                  </div>
            
