@@ -1,6 +1,8 @@
-import React from 'react'
-const Table = ({data}) =>{
-    console.log(data);
+import React from 'react';
+import {useSelector} from 'react-redux';
+const Table = () =>{
+    const data = useSelector(state => state)
+    
     return (
     
         <div>

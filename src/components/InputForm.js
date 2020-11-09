@@ -1,9 +1,13 @@
 import React,{useState,useEffect} from 'react';
 import Table from './Table';
 import {Link} from 'react-router-dom';
-import './InputForm.css'
+import './InputForm.css';
+import {useSelector,useDispatch} from 'react-redux';
+import {addData} from '../redux/actions'
+
 function InputForm() {
-  
+    const dispatch = useDispatch();
+    const data = useSelector(state => state)
     let initalValue ={
             username:'',
             email:'',
@@ -22,21 +26,14 @@ function InputForm() {
     const [district, setDistrict]= useState('');
     const [provience, setProvience]= useState('3');
     const [country, setCountry]=  useState('Nepal');
-   
     const [countries] = useState(['India','China','Australia','Nepal','France','Germany','Japan','Canada']);
-    // const [formValue,setFormValue] = useState(initalValue)
-    const [data,setData]=useState([])
+  
 
-    useEffect(()=>{
-        window.localStorage.setItem('data', JSON.stringify(data));
-    },[data])
+   
 
-    let dataValue =JSON.parse( window.localStorage.getItem('data')||"[]");
-    console.log("from dvalue",dataValue)
     const handleSubmit=(e)=>{
       
-        console.log(username,email,phone,dob,city,district,provience,country);
-        if(!username||!email||!phone||!dob||!district||!city){
+            if(!username||!email||!phone||!dob||!district||!city){
             alert('Please enter all the fields')
             setUsername(username);
             setEmail(email);
@@ -70,7 +67,7 @@ function InputForm() {
             setCountry(country);
         }
        else{
-        setData([...data,{username:username,email:email,phone:phone,dob:dob,district:district,city:city,provience:provience,country:country}]);
+        dispatch(addData({username:username,email:email,phone:phone,dob:dob,district:district,city:city,provience:provience,country:country}));
         setUsername('');
         setEmail('');
         setPhone('');
@@ -87,42 +84,6 @@ function InputForm() {
     }
    
   
-    console.log(data);
-//    const handleChange=(e)=>{
-//         const recievedData = e.target
-
-//         switch(recievedData.id){
-//             case 'username':
-//                 setFormValue({...formValue,username:recievedData.value})
-//                 break;
-//             case 'email':
-//                 setFormValue({...formValue,email:recievedData.value})
-//                 break;
-//             case 'phone':
-//                 setFormValue({...formValue,phone:recievedData.value})
-//                 break;
-//             case 'dob':
-//                 setFormValue({...formValue,dob:recievedData.value})
-//                 break;
-//             case 'city':
-//                 setFormValue({...formValue,city:recievedData.value})
-//                 break;
-//             case 'district':
-//                 setFormValue({...formValue,district:recievedData.value})
-//                 break;
-//             case 'provience':
-//                 setFormValue({...formValue,provience:recievedData.value})
-//                 break;
-//             case 'country':
-//                 setFormValue({...formValue,country:recievedData.value})
-//                 break;
-
-//             default:
-//                 break ;  
-            
-//         }
-//         console.log(formValue)       
-//    } 
    const getProvience = ()=>{
        let provience=[]
        for (let i = 0; i <7;i++){
@@ -189,7 +150,7 @@ function InputForm() {
                         {/* </form> */}
                     </div>
                 <div className="table">
-                    <Table data={data}/>
+                    <Table />
                      {data.length>0?<Link to="profiles"><button className="profileBtn">Profiles</button></Link>:''}
 
                    

@@ -1,8 +1,9 @@
 import React from 'react'
 import {Link} from 'react-router-dom';
 import './Profiles.css';
+import {useSelector} from 'react-redux';
 const Profiles = () =>{
-    let data = JSON.parse(window.localStorage.getItem('data')||"[]");
+    const data = useSelector(state => state)
     // console.log("from profiles",props.location.data);
     return(
        <div className="profiles">
