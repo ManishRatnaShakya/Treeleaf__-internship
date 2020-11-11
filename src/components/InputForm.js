@@ -20,8 +20,13 @@ function InputForm() {
     const [provience, setProvience]= useState('3');
     const [country, setCountry]=  useState('Nepal');
     const [countries] = useState(['India','China','Australia','Nepal','France','Germany','Japan','Canada']);
-  
-    console.log(data);
+    const [err,setErr]=useState();
+    const [usernameErr,setUsernameErr]=useState(false);
+    const [emailErr,setEmailErr]=useState(false);
+    const [phoneErr,setPhoneErr]=useState(false);
+    const [dobErr,setDobErr]=useState(false);
+    const [cityErr,setCityErr]=useState(false);
+    const[districtErr,setDistrictErr]=useState(false);
     const handleEdit =(d)=>{
         setEditable(true)
         dispatch(updateData(...data))
@@ -52,18 +57,60 @@ function InputForm() {
             setProvience('3');
             setCountry('Nepal');
     }
+    const setToCurrent=()=>{
+            setUsername(username);
+            setEmail(email);
+            setPhone(phone);
+            setDob(dob);
+            setCity(city);
+            setDistrict(district);
+            setProvience(provience);
+            setCountry(country);
+    }
+    const handleErr=()=>{
+       
+    }
+    
     const handleSubmit=(e)=>{
         if(!username||!email||!phone||!dob||!district||!city){
-            alert('Please enter all the fields')
-            setToInitial();
+            if(!username){
+               setUsernameErr(true);
+            }
+            else if(!email){
+                setEmailErr(true);
+            }
+            
+            if(!dob){
+                setDobErr(true);
+            }
+            
+            if(!phone){
+                setPhoneErr(true)
+            }
+            
+            if(!district){
+                setDistrictErr(true)
+            }
+            if(!city){
+                setCityErr(true)
+            }
+            setErr("please enter all required fields")
+            setToCurrent();
         }
         else if(!phone.match( /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)){
-            alert("Please check your phone number");
-            setToInitial();
+            if(phone.length!==10){
+                setPhoneErr(true)
+                setErr("Phone Number must be 10 digits")
+            }
+            else{
+                setPhoneErr(true)
+            setErr("Please Check your phone number")
+            }
+            setToCurrent();
         }
         else if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
             alert("Please check your email address");
-           setToInitial();
+           setToCurrent();
         }
        else{
         dispatch(addData({id:uuid.v4(),username:username,email:email,phone:phone,dob:dob,district:district,city:city,provience:provience,country:country}));
@@ -90,18 +137,17 @@ function InputForm() {
             </div>
             <div className="container">
                 <div className="form">
-                      
-                            
-                            <label htmlFor="username">Name</label><input type="text" id="username" value={username}  onChange={(e)=>{setUsername(e.target.value)}}/>
+                                                
+                            <label htmlFor="username">Name</label><input className={usernameErr?'inputErr':''} type="text" id="username" value={username}  onChange={(e)=>{setUsername(e.target.value)}}/>
                      
-                            <label htmlFor="email">Email</label><input type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
+                            <label htmlFor="email">Email</label><input className={emailErr?'inputErr':''} type="email" id="email" value={email} onChange={(e)=>{setEmail(e.target.value)}} />
                 
                             <div className="pInfo">
                                 <div className="phone">
-                            <label htmlFor="phone">Phone</label><input type="text" id="phone" value={phone}  onChange={(e)=>{setPhone(e.target.value)}} />
+                            <label htmlFor="phone">Phone</label><input className={phoneErr?'inputErr':''} type="text" id="phone" value={phone}  onChange={(e)=>{setPhone(e.target.value)}} />
                             </div>
                             <div className="dob">
-                            <label htmlFor="dob">Date of Birth</label><br/><input type="date" value={dob} id="dob"  onChange={(e)=>{setDob(e.target.value)}}/>
+                            <label htmlFor="dob">Date of Birth</label><br/><input className={dobErr?'inputErr':''} type="date" value={dob} id="dob"  onChange={(e)=>{setDob(e.target.value)}}/>
                             </div>
                             </div>
                             <br/>
@@ -109,8 +155,8 @@ function InputForm() {
                             <div className='address'>
                             <div className="address">
                                 
-                                        <label htmlFor="city">City</label><input type="text" id="city" value={city}  onChange={(e)=>{setCity(e.target.value)}}/>
-                                        <label htmlFor="district">District</label><input type="text" id="district" value={district}  onChange={(e)=>{setDistrict(e.target.value)}}/>
+                                        <label htmlFor="city">City</label><input type="text" className={cityErr?'inputErr':''} id="city" value={city}  onChange={(e)=>{setCity(e.target.value)}}/>
+                                        <label htmlFor="district">District</label><input className={districtErr?'inputErr':''} type="text" id="district" value={district}  onChange={(e)=>{setDistrict(e.target.value)}}/>
                                         <div className="cInfo">
                                             <div className="provience">     
                                         <label htmlFor="provience">Provience</label>
@@ -140,6 +186,7 @@ function InputForm() {
                         {/* </form> */}
                     </div>
                 <div className="table">
+                    <div className="error">{err}</div>
                     <Table edit={handleEdit}/>
                      {data.length>0?<Link to="profiles"><button className="profileBtn">Profiles</button></Link>:''}
 
