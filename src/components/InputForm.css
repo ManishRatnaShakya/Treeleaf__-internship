@@ -56,7 +56,8 @@ button[type=submit] {
 .table{
    text-align: center;
     margin-left: 30px;
-    width:60%;
+    width:100%;
+    
     overflow: scroll;
 }
 table{

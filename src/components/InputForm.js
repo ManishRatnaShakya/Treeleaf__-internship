@@ -1,23 +1,16 @@
-import React,{useState,useEffect} from 'react';
+import React,{useState} from 'react';
 import Table from './Table';
 import {Link} from 'react-router-dom';
 import './InputForm.css';
 import {useSelector,useDispatch} from 'react-redux';
-import {addData} from '../redux/actions'
+import {addData,updateData} from '../redux/actions';
+import uuid from 'uuid';
 
 function InputForm() {
     const dispatch = useDispatch();
     const data = useSelector(state => state)
-    let initalValue ={
-            username:'',
-            email:'',
-            phone:'',
-            dob:'',
-            city:'',
-            district:'',
-            provience:'3',
-            country:'Nepal',
-    }
+    const [editable,setEditable]=useState(false);
+    const [id,setId] = useState();
     const [username, setUsername]= useState('');
     const [email, setEmail]= useState('');
     const [phone, setPhone]= useState('');
@@ -28,58 +21,55 @@ function InputForm() {
     const [country, setCountry]=  useState('Nepal');
     const [countries] = useState(['India','China','Australia','Nepal','France','Germany','Japan','Canada']);
   
+    console.log(data);
+    const handleEdit =(d)=>{
+        setEditable(true)
+        dispatch(updateData(...data))
+        setId(d.id)
+        setUsername(d.username)
+        setEmail(d.email)
+        setPhone(d.phone)
+        setDob(d.dob)
+        setCity(d.city)
+        setDistrict(d.district)
+        setProvience(d.provience)
+        setCountry(d.country)
+        }
 
-   
+    const handleUpdate=(d)=>{
+        dispatch(updateData({id:id,username:username,email:email,phone:phone,dob:dob,city:city,district:district,provience:provience,country:country}));
+        setEditable(false)
+        setToInitial();
+    }
 
+    const setToInitial=()=>{
+            setUsername('');
+            setEmail('');
+            setPhone('');
+            setDob('');
+            setCity('');
+            setDistrict('');
+            setProvience('3');
+            setCountry('Nepal');
+    }
     const handleSubmit=(e)=>{
-      
-            if(!username||!email||!phone||!dob||!district||!city){
+        if(!username||!email||!phone||!dob||!district||!city){
             alert('Please enter all the fields')
-            setUsername(username);
-            setEmail(email);
-            setPhone(phone);
-            setDob(dob);
-            setCity(city);
-            setDistrict(district);
-            setProvience(provience);
-            setCountry(country);
+            setToInitial();
         }
         else if(!phone.match( /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/)){
             alert("Please check your phone number");
-            setUsername(username);
-            setEmail(email);
-            setPhone(phone);
-            setDob(dob);
-            setCity(city);
-            setDistrict(district);
-            setProvience(provience);
-            setCountry(country);
+            setToInitial();
         }
         else if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
             alert("Please check your email address");
-            setUsername(username);
-            setEmail(email);
-            setPhone(phone);
-            setDob(dob);
-            setCity(city);
-            setDistrict(district);
-            setProvience(provience);
-            setCountry(country);
+           setToInitial();
         }
        else{
-        dispatch(addData({username:username,email:email,phone:phone,dob:dob,district:district,city:city,provience:provience,country:country}));
-        setUsername('');
-        setEmail('');
-        setPhone('');
-        setDob('');
-        setCity('');
-        setDistrict('');
-        setProvience('3');
-        setCountry('Nepal');
-        
-        // document.getElementById('user-data').reset();
+        dispatch(addData({id:uuid.v4(),username:username,email:email,phone:phone,dob:dob,district:district,city:city,provience:provience,country:country}));
+        setToInitial();
        }
-        //  setFormValue(initalValue);
+        
          
     }
    
@@ -100,7 +90,7 @@ function InputForm() {
             </div>
             <div className="container">
                 <div className="form">
-                        {/* <form onSubmit={handleSubmit} id="user-data"> */}
+                      
                             
                             <label htmlFor="username">Name</label><input type="text" id="username" value={username}  onChange={(e)=>{setUsername(e.target.value)}}/>
                      
@@ -144,13 +134,13 @@ function InputForm() {
                                         </div>
                                         </div>
                                         </div>
-                                        <button className="submit" onClick={handleSubmit} type="submit">Submit</button>
+                                        <button className="submit" onClick={editable?handleUpdate:handleSubmit} type="submit">{editable?'Update':'Submit'}</button>
                                                         
                             </div>
                         {/* </form> */}
                     </div>
                 <div className="table">
-                    <Table />
+                    <Table edit={handleEdit}/>
                      {data.length>0?<Link to="profiles"><button className="profileBtn">Profiles</button></Link>:''}
 
                    
