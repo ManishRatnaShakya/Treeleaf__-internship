@@ -67,7 +67,13 @@ function InputForm() {
             setProvience(provience);
             setCountry(country);
     }
-    const handleErr=()=>{
+    const setErrToInitial=()=>{
+       setUsernameErr(false);
+       setEmailErr(false);
+       setPhoneErr(false);
+       setDobErr(false);
+       setCityErr(false);
+       setDistrictErr(false);
        
     }
     
@@ -76,7 +82,7 @@ function InputForm() {
             if(!username){
                setUsernameErr(true);
             }
-            else if(!email){
+             if(!email){
                 setEmailErr(true);
             }
             
@@ -109,12 +115,13 @@ function InputForm() {
             setToCurrent();
         }
         else if(!email.match(/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/)){
-            alert("Please check your email address");
-           setToCurrent();
+            setEmailErr(true)
+            setToCurrent();
         }
        else{
         dispatch(addData({id:uuid.v4(),username:username,email:email,phone:phone,dob:dob,district:district,city:city,provience:provience,country:country}));
         setToInitial();
+        setErrToInitial();
        }
         
          
@@ -133,6 +140,7 @@ function InputForm() {
             <div className="header">
                 <div className="header__title">
                     <h3>Simple User Data</h3>
+                   <div>  <Link to="/profiles"><div className="link" style={{textDecoration:'none'}}>Profiles</div></Link></div>
                 </div>
             </div>
             <div className="container">
